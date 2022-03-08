@@ -1,38 +1,38 @@
+
 pipeline {
     agent any
-        stages {
-            stage('Parameters'){
-                steps {
-                    script {
+    stages {
+        stage('Parameters'){
+            steps {
+                script {
                     properties([
-                            parameters([
-                                [$class: 'ChoiceParameter', 
-                                    choiceType: 'PT_SINGLE_SELECT', 
-                                    description: 'Select the Environemnt from the Dropdown List', 
-                                    filterLength: 1, 
-                                    filterable: false, 
-                                    name: 'Env', 
+                        parameters([
+                            [$class: 'ChoiceParameter', 
+                                choiceType: 'PT_SINGLE_SELECT', 
+                                description: 'Microservice Project Name', 
+                                filterLength: 1, 
+                                filterable: true, 
+                                name: 'MICROSERVICE_NAME', 
+                                script: [
+                                    $class: 'GroovyScript', 
+                                    fallbackScript: [
+                                        classpath: [], 
+                                        sandbox: false, 
+                                        script: 
+                                            "return ['ERROR']"
+                                    ], 
                                     script: [
-                                        $class: 'GroovyScript', 
-                                        fallbackScript: [
-                                            classpath: [], 
-                                            sandbox: false, 
-                                            script: 
-                                                "return['Could not get The environemnts']"
-                                        ], 
-                                        script: [
-                                            classpath: [], 
-                                            sandbox: false, 
-                                            script: 
-                                                "return['dev','stage','prod']"
-                                        ]
+                                        classpath: [], 
+                                        sandbox: false, 
+                                        script: 
+                                            "return['dev','stage','prod']"
                                     ]
                                 ]
-                                
-                            ])
+                            ]                               
                         ])
-                    }
+                    ])
                 }
             }
-        }   
+        }
+    }   
 }
