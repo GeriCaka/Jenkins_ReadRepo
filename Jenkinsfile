@@ -1,89 +1,76 @@
 pipeline {
     agent any
-        stages {
-            stage('Parameters'){
-                steps {
-                    script {
-                    properties([
-                            parameters([
-                                [$class: 'ChoiceParameter', 
-                                    choiceType: 'PT_SINGLE_SELECT', 
-                                    description: 'Select the Environemnt from the Dropdown List', 
-                                    filterLength: 1, 
-                                    filterable: false, 
-                                    name: 'Env', 
-                                    script: [
-                                        $class: 'GroovyScript', 
-                                        fallbackScript: [
-                                            classpath: [], 
-                                            sandbox: false, 
-                                            script: 
-                                                "return['Could not get The environemnts']"
-                                        ], 
-                                        script: [
-                                            classpath: [], 
-                                            sandbox: false, 
-                                            script: 
-                                                "return['dev','stage','prod']"
-                                        ]
-                                    ]
-                                ],
-                                [$class: 'CascadeChoiceParameter', 
-                                    choiceType: 'PT_SINGLE_SELECT', 
-                                    description: 'Select the AMI from the Dropdown List',
-                                    name: 'AMI List', 
-                                    referencedParameters: 'Env', 
-                                    script: 
-                                        [$class: 'GroovyScript', 
-                                        fallbackScript: [
-                                                classpath: [], 
-                                                sandbox: false, 
-                                                script: "return['Could not get Environment from Env Param']"
-                                                ], 
-                                        script: [
-                                                classpath: [], 
-                                                sandbox: false, 
-                                                script: '''
-                                                if (Env.equals("dev")){
-                                                    return["ami-sd2345sd", "ami-asdf245sdf", "ami-asdf3245sd"]
-                                                }
-                                                else if(Env.equals("stage")){
-                                                    return["ami-sd34sdf", "ami-sdf345sdc", "ami-sdf34sdf"]
-                                                }
-                                                else if(Env.equals("prod")){
-                                                    return["ami-sdf34sdf", "ami-sdf34ds", "ami-sdf3sf3"]
-                                                }
-                                                '''
-                                            ] 
-                                    ]
-                                ],
-                                [$class: 'DynamicReferenceParameter', 
-                                    choiceType: 'ET_ORDERED_LIST', 
-                                    description: 'Select the  AMI based on the following infomration', 
-                                    name: 'Image Information', 
-                                    referencedParameters: 'Env', 
-                                    script: 
-                                        [$class: 'GroovyScript', 
-                                        script: 'return["Could not get AMi Information"]', 
-                                        script: [
-                                            script: '''
-                                                    if (Env.equals("dev")){
-                                                        return["ami-sd2345sd:  AMI with Java", "ami-asdf245sdf: AMI with Python", "ami-asdf3245sd: AMI with Groovy"]
-                                                    }
-                                                    else if(Env.equals("stage")){
-                                                        return["ami-sd34sdf:  AMI with Java", "ami-sdf345sdc: AMI with Python", "ami-sdf34sdf: AMI with Groovy"]
-                                                    }
-                                                    else if(Env.equals("prod")){
-                                                        return["ami-sdf34sdf:  AMI with Java", "ami-sdf34ds: AMI with Python", "ami-sdf3sf3: AMI with Groovy"]
-                                                    }
-                                                    '''
-                                                ]
-                                        ]
-                                ]
-                            ])
-                        ])
-                    }
-                }
+    parameters {
+        activeChoiceParam('Service') {
+            description('Select service you wan to deploy')
+            choiceType('SINGLE_SELECT')
+            groovyScript {
+                script('return ['web-service', 'proxy-service', 'backend-service']')
+                fallbackScript('"fallback choice"')
             }
-        }   
+        }
+        activeChoiceReactiveParam('Tag') {
+            description('Select tag from dockerhub')
+            choiceType('SINGLE_SELECT')
+            groovyScript {
+                script('''
+                    import groovy.json.JsonSlurperClassic
+                    import jenkins.model.Jenkins
+
+                    image = imageName(Service)
+                    token = getAuthTokenDockerHub()
+                    tags = getTagFromDockerHub(image, token)
+                    return tags
+
+                    def getTagFromDockerHub(imgName, authToken) {
+                        def url = new URL("https://hub.docker.com/v2/repositories/${imgName}/tags?page=1&page_size=50")
+                        def parsedJSON = parseJSON(url.getText(requestProperties:["Authorization":"JWT ${authToken}"]))
+                        def regexp = "^\\d{1,2}.\\d{1,2}\$"
+                        parsedJSON.results.findResults { 
+                        it.name =~ /$regexp/ ? "${it.name}".toString() : null
+                        }
+                    }
+
+                    def getAuthTokenDockerHub() {
+                        def creds = com.cloudbees.plugins.credentials.CredentialsProvider.lookupCredentials(
+                        com.cloudbees.plugins.credentials.common.StandardUsernameCredentials.class,
+                        Jenkins.instance,
+                        null,
+                        null)
+                        for (c in creds) {
+                        if (c.id == "dockerhub_credentials") {
+                            user = c.username
+                            pass = c.password
+                        }
+                        }
+                        def url = new URL("https://hub.docker.com/v2/users/login/")
+                        def conn = url.openConnection()
+                        conn.setRequestMethod("POST")
+                        conn.setRequestProperty("Content-Type", "application/json")
+                        conn.doOutput = true
+
+                        def authString = "{\"username\": \"${user}\", \"password\": \"${pass}\"}"
+                        def writer = new OutputStreamWriter(conn.outputStream)
+                        writer.write(authString)
+                        writer.flush()
+                        writer.close()
+                        conn.connect()
+
+                        def result = parseJSON(conn.content.text)
+                        return result.token
+                    }
+                    def parseJSON(json) {
+                        return new groovy.json.JsonSlurperClassic().parseText(json)
+                    }
+                    def imageName(name){
+                    return "bartekj/${name}".toString()
+                    }               
+                ''')
+                fallbackScript('"fallback choice"')
+            }
+            referencedParameter('Service')
+        }
+        choiceParam('Environment', ['test', 'stage', 'prod'], 'Select environment')
+    }  
+        
 }
