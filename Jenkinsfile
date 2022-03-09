@@ -6,11 +6,7 @@ pipeline {
         buildDiscarder logRotator(daysToKeepStr: '7', numToKeepStr: '10')
          // This is required if you want to clean before build
         skipDefaultCheckout(true)
-    }
-    
-    environment {
-        GIT_SECRET_CREDENTIALS = credentials('771bcedc-0fd3-421a-921f-be0033489238')
-    }
+    }  
     
     stages {  
                           
