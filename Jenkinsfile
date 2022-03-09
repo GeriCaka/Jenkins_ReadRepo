@@ -22,7 +22,7 @@ pipeline {
                         branches: [[name: '*/main']], 
                         extensions: [], 
                         userRemoteConfigs: [[
-                            credentialsId: "${env.GIT_SECRET_CREDENTIALS}", 
+                            credentialsId: "771bcedc-0fd3-421a-921f-be0033489238", 
                             url: 'https://github.com/GeriCaka/Jenkins_ReadRepo.git'
                         ]]
                     ])
