@@ -7,6 +7,9 @@ pipeline {
          // This is required if you want to clean before build
         skipDefaultCheckout(true)
     }  
+    environment{
+        SECRET = credentials('My_secret_Text')
+    }
     
     stages {  
                           
@@ -39,6 +42,7 @@ pipeline {
                 // Clean before build
                 cleanWs()                
                 echo "Building ${env.JOB_NAME}..."
+                echo "My secret text is ${env.SECRET}"
             }
         }
         
