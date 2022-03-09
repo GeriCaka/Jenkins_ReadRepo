@@ -42,7 +42,7 @@ pipeline {
                 // Clean before build
                 cleanWs()                
                 echo "Building ${env.JOB_NAME}..."
-                echo "My secret text is ${env.SECRET}"
+                echo "----------- My secret text is ${SECRET}"
             }
         }
         
