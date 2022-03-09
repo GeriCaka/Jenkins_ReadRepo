@@ -20,7 +20,7 @@ pipeline {
             
             stage('Print') {
                 steps {
-                    echo "Current Revision ${currentRevision.GIT_URL}"
+                    echo "Current Revision ${currentRevision}"
                 }
             }
         }    
