@@ -28,9 +28,7 @@ pipeline {
         stage('Build') {
             steps {
                 // Clean before build
-                cleanWs()
-                // We need to explicitly checkout from SCM here
-                checkout scm
+                cleanWs()                
                 echo "Building ${env.JOB_NAME}..."
             }
         }
