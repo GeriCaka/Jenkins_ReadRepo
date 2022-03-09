@@ -41,7 +41,9 @@ pipeline {
         stage('Build') {
             steps {
                 // Clean before build
-                cleanWs()                
+                cleanWs()    
+                // We need to explicitly checkout from SCM here
+                checkout scm
                 echo "Building ${env.JOB_NAME}..."
                 echo "----------- My secret file json is ${SECRET_FILE_JSON}"
             }
