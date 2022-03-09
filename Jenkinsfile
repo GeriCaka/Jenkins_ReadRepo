@@ -28,7 +28,7 @@ pipeline {
         stage('Cred') {
             steps{
                 withCredentials([file(credentialsId: 'GCPKEY', variable: 'variableName')]) {
-                    echo "My secret text is '${GCPKEY}'"
+                    echo "My secret text is ${GCPKEY}"
                 }
             }
         }
