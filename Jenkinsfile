@@ -9,6 +9,7 @@ pipeline {
     }  
     environment{
         SECRET = credentials('My_secret_Text')
+        SECRET_FILE_JSON = credentials('GCPKEY')
     }
     
     stages {  
@@ -42,7 +43,7 @@ pipeline {
                 // Clean before build
                 cleanWs()                
                 echo "Building ${env.JOB_NAME}..."
-                echo "----------- My secret text is ${SECRET}"
+                echo "----------- My secret file json is ${SECRET_FILE_JSON}"
             }
         }
         
