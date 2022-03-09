@@ -7,6 +7,11 @@ pipeline {
          // This is required if you want to clean before build
         skipDefaultCheckout(true)
     }
+    
+    environment {
+        GIT_SECRET_CREDENTIALS = credentials('771bcedc-0fd3-421a-921f-be0033489238')
+    }
+    
     stages {  
                           
         stage('Checkout') {
@@ -17,7 +22,7 @@ pipeline {
                         branches: [[name: '*/main']], 
                         extensions: [], 
                         userRemoteConfigs: [[
-                            credentialsId: 'f7df551d-63c9-4ebd-80ad-13e602b795c5', 
+                            credentialsId: GIT_SECRET_CREDENTIALS, 
                             url: 'https://github.com/GeriCaka/Jenkins_ReadRepo.git'
                         ]]
                     ])
