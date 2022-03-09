@@ -18,6 +18,12 @@ pipeline {
                 }
             }
             
+            stage('Print') {
+                steps {
+                    echo "Current Revision ${currentRevision}"
+                }
+            }
+            
             stage('Parameters'){
                 steps {
                     script {
