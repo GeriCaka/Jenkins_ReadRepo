@@ -48,7 +48,7 @@ pipeline {
                 echo "----------- My secret file json is ${SECRET_FILE_JSON}"
                 bat '''
                     cd src/main/java/example/
-                    #questo è un commento
+                    # questo è un commento
                     dir
                 '''
             }
