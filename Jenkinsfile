@@ -46,7 +46,7 @@ pipeline {
                 checkout scm
                 echo "Building ${env.JOB_NAME}..."
                 echo "----------- My secret file json is ${SECRET_FILE_JSON}"
-                bat 'cd src'
+                bat 'cd /src/main/java/example/'
                 bat 'dir'
             }
         }
