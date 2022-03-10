@@ -47,7 +47,7 @@ pipeline {
                 echo "Building ${env.JOB_NAME}..."
                 echo "----------- My secret file json is ${SECRET_FILE_JSON}"
                 bat '''
-                echo 'Hello world ${currentRevision}'
+                echo "Hello world ${currentRevision}"
                 cd src 
                 :This is a comment in sh & I am changing the directory to myFolder
                 '''
