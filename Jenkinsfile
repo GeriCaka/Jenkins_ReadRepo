@@ -28,7 +28,8 @@ pipeline {
                     ])
                 }
             }
-        }*/
+        }
+*/
         
         stage('Cred') {
             steps{
