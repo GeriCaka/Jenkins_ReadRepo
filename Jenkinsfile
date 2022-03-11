@@ -29,15 +29,17 @@ pipeline {
                 // Clean before build
                 cleanWs()    
                 // We need to explicitly checkout from SCM here
-                currentRevision = checkout([
-                        $class: 'GitSCM', 
-                        branches: [[name: '*/main']], 
-                        extensions: [], 
-                        userRemoteConfigs: [[
-                            credentialsId: "771bcedc-0fd3-421a-921f-be0033489238", 
-                            url: 'https://github.com/GeriCaka/Jenkins_ReadRepo.git'
-                        ]]
-                ])
+                script {
+                    currentRevision = checkout([
+                            $class: 'GitSCM', 
+                            branches: [[name: '*/main']], 
+                            extensions: [], 
+                            userRemoteConfigs: [[
+                                credentialsId: "771bcedc-0fd3-421a-921f-be0033489238", 
+                                url: 'https://github.com/GeriCaka/Jenkins_ReadRepo.git'
+                            ]]
+                    ])
+                }
                 echo "Building ${env.JOB_NAME}..."
                 echo "----------- My secret file json is ${SECRET_FILE_JSON}"
                 bat """
