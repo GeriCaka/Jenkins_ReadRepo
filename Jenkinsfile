@@ -1,9 +1,5 @@
 pipeline {
-    agent any
-    
-    triggers {
-        pollSCM '* * * * *'
-    }
+    agent any  
 
     options {
         timestamps()
