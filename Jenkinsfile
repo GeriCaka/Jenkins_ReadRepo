@@ -7,6 +7,10 @@ pipeline {
          // This is required if you want to clean before build
         skipDefaultCheckout(true)
     }  
+    
+    triggers {
+        pollSCM '* * * * *'
+    }
     environment{
         
         SECRET_FILE_JSON = credentials('GCPKEY')
@@ -30,7 +34,7 @@ pipeline {
                 cleanWs()    
                 // We need to explicitly checkout from SCM here
                 script {
-                    currentRevision = checkout changelog: true, poll: true, scm: [$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: 'geri_git', url: 'https://github.com/GeriCaka/Jenkins_ReadRepo.git']]]
+                    currentRevision = checkout scm: [$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: 'geri_git', url: 'https://github.com/GeriCaka/Jenkins_ReadRepo.git']]]
                 }
                 echo "Building ${env.JOB_NAME}..."
                 echo "----------- My secret file json is ${SECRET_FILE_JSON}"
