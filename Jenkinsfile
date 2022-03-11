@@ -12,7 +12,7 @@ pipeline {
         skipDefaultCheckout(true)
     }  
     environment{
-        SECRET = credentials('My_secret_Text')
+        
         SECRET_FILE_JSON = credentials('GCPKEY')
     }
     
