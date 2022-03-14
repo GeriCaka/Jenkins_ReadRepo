@@ -56,7 +56,7 @@ pipeline {
             steps {               
                 
                 bat 'dir'
-                build job: "pipelineA", wait: true
+                build job: "pipelineA", propagate: true, wait: true
                
             }
         }
