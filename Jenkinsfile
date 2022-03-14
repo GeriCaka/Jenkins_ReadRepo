@@ -54,9 +54,11 @@ pipeline {
         
         stage ('Invoke_pipeline') {
             steps {
-                bat 'dir'
-                bat 'cd src'
-                bat 'dir'
+                bat '''
+                dir
+                cd src
+                dir
+                '''              
                 build job: 'SubPipeline',
                     propagate: true, 
                     wait: true
