@@ -49,17 +49,18 @@ pipeline {
         
         
         
-        post {
-            success {
-                script {
-                    def jenkinsFile    
-                    jenkinsFile = load('src/SubPipeline')
-                    jenkinsFile.start()
-                }           
-            }
-        }
+       
         
     }    
+    post {
+        success {
+            script {
+                def jenkinsFile    
+                jenkinsFile = load('src/SubPipeline')
+                jenkinsFile.start()
+            }           
+        }
+    }
 }
 
 
