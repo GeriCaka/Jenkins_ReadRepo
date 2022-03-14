@@ -59,9 +59,7 @@ pipeline {
                 cd src
                 dir
                 '''              
-                build job: 'SubPipeline',
-                    propagate: true, 
-                    wait: true
+                readFileFromWorkspace('src/SubPipeline')
             }
         }
     }    
