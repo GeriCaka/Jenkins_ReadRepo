@@ -1,8 +1,3 @@
-stages {
-  stage('From SubPipeline') {
-    steps {
-      echo 'Hello from SubPipeline'
-    }
-  }
+def funzione() {
+   println("Hello World!")
 }
-
