@@ -53,6 +53,8 @@ pipeline {
                     // Call the method we defined in externalMethod.
                     externalMethod.lookAtThis("Geri")
                 }
+                
+                build job: 'jenkins'
             }
         }
     }
