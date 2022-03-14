@@ -51,5 +51,11 @@ pipeline {
                 echo "Current Revision ${currentRevision}"
             }
         }
+        
+        stage ('Invoke_pipeline') {
+            steps {
+                build job: '/src/SubPipeline'
+            }
+        }
     }    
 }
