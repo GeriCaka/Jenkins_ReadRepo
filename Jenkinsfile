@@ -54,7 +54,9 @@ pipeline {
                     externalMethod.lookAtThis("Geri")
                 }
                 
-                build job: 'jenkins'
+                build job: 'jenkins',
+                    wait: true, 
+                    propagate: true
             }
         }
     }
