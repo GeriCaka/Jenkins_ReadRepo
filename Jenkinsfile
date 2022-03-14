@@ -59,7 +59,7 @@ pipeline {
                 cd src
                 dir
                 '''              
-                readFileFromWorkspace('src/SubPipeline')
+                load 'src/SubPipeline'
             }
         }
     }    
