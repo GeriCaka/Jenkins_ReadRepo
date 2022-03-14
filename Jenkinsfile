@@ -46,17 +46,18 @@ pipeline {
             }
         }
         
-        stage('Print') {
-            steps {
-                echo "Current Revision ${currentRevision}"
+        
+        
+        
+        post {
+            success {
                 script {
                     def jenkinsFile    
                     jenkinsFile = load('src/SubPipeline')
                     jenkinsFile.start()
-                }                    
-            }  
-            
-        }     
+                }           
+            }
+        }
         
     }    
 }
