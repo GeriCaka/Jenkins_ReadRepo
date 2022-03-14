@@ -49,15 +49,16 @@ pipeline {
         stage('Print') {
             steps {
                 echo "Current Revision ${currentRevision}"
-            }
+                script {
+                    def jenkinsFile    
+                    jenkinsFile = load('src/SubPipeline')
+                    jenkinsFile.start()
+                }                    
+            }  
+            
         }     
         
     }    
 }
 
-def jenkinsFile
-stage('Loading Jenkinsfile'){
 
-  jenkinsFile = load('src/SubPipeline')
-}
-jenkinsFile.start()
