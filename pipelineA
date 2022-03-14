@@ -1,11 +1,8 @@
-pipeline {
-  agent any;
-  
-  stages {
-    stage('From SubPipeline') {
-      steps {
-        echo 'Hello from SubPipeline'
-      }
+stages {
+  stage('From SubPipeline') {
+    steps {
+      echo 'Hello from SubPipeline'
     }
   }
 }
+
