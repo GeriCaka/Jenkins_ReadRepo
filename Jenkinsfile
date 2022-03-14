@@ -56,7 +56,7 @@ pipeline {
             steps {                             
                 dir("/src"){
                     bat 'dir'
-                    build job: 'SubPipeline'
+                    build job: "/src/${env.BRANCH}", wait: true
                 }
             }
         }
