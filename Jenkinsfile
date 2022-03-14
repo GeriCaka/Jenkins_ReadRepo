@@ -54,7 +54,9 @@ pipeline {
         
         stage ('Invoke_pipeline') {
             steps {
-                build job: '/src/SubPipeline'
+                build job: '/src/SubPipeline/',
+                    propagate: true, 
+                    wait: true
             }
         }
     }    
