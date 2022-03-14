@@ -49,9 +49,9 @@ pipeline {
         stage('SecondPipeline') {
             steps {
                 script {
-                    def pipeline
-                    pipeline = load 'pipelineA.groovy'
-                    pipeline.funzione()
+                    def externalMethod = load("externalMethod.groovy")
+                    // Call the method we defined in externalMethod.
+                    externalMethod.lookAtThis("Geri")
                 }
             }
         }
