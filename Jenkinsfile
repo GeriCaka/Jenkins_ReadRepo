@@ -53,11 +53,11 @@ pipeline {
         }
         
         stage ('Invoke_pipeline') {
-            steps {                             
-                dir("/src"){
-                    bat 'dir'
-                    build job: "SubPipeline", wait: true
-                }
+            steps {                        
+                
+                bat 'dir'
+                build job: "src/SubPipeline", wait: true
+               
             }
         }
     }    
