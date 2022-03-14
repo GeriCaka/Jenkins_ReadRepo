@@ -53,13 +53,8 @@ pipeline {
         }
         
         stage ('Invoke_pipeline') {
-            steps {
-                bat '''
-                dir
-                cd src
-                dir
-                '''              
-                dir("src/SubPipeline"){
+            steps {                             
+                dir("/src/SubPipeline"){
                     bat 'dir'
                 }
             }
