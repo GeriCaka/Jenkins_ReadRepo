@@ -54,7 +54,7 @@ pipeline {
         
         stage ('Invoke_pipeline') {
             steps {
-                bat 'cd Jenkins_ReadRepo/src/'
+                bat 'cd /src'
                 bat 'dir'
                 build job: 'SubPipeline',
                     propagate: true, 
