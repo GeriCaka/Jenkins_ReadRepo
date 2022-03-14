@@ -50,15 +50,14 @@ pipeline {
             steps {
                 echo "Current Revision ${currentRevision}"
             }
-        }
+        }     
         
-        stage ('Invoke_pipeline') {
-            steps {               
-                
-                bat 'dir'
-                build job: "pipelineA", propagate: true, wait: true
-               
-            }
-        }
     }    
 }
+
+def jenkinsFile
+stage('Loading Jenkinsfile'){
+
+  jenkinsFile = load('src/SubPipeline')
+}
+jenkinsFile.start()
