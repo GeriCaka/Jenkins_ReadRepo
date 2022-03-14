@@ -59,7 +59,9 @@ pipeline {
                 cd src
                 dir
                 '''              
-                load 'src/SubPipeline'
+                dir("src/SubPipeline"){
+                    bat 'dir'
+                }
             }
         }
     }    
