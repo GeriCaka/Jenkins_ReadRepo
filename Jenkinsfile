@@ -46,17 +46,17 @@ pipeline {
             }
         }
         
-        
-        
-        
-       
-        
-    }    
-    post {
-        success {
-            build job: "pipelineA"         
+        stage('SecondPipeline') {
+            steps {
+                script {
+                    def pipeline
+                    pipeline = load 'pipelineA.groovy'
+                    pipeline.funzione()
+                }
+            }
         }
     }
+   
 }
 
 
