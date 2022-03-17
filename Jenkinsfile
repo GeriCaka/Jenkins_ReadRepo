@@ -14,8 +14,7 @@ pipeline {
               parameters: [
                 booleanParam(name: 'StageA', value: "false"),
                 booleanParam(name: 'StageB', value: "false"),
-                booleanParam(name: 'StageC', value: "false"),
-                booleanParam(name: 'Build', value: "false"),
+                booleanParam(name: 'StageC', value: "false"),                
                 string(name: 'Workspace', value: "${env.WORKSPACE}")
               ],
               wait: true, 
