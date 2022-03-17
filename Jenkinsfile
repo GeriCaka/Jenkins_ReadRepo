@@ -8,6 +8,7 @@ pipeline {
   stages {
     stage('Calling Base!'){
       steps { 
+        echo "${env.WORKSPACE}"
         echo 'Calling Base'
         build job: 'git_base',
               parameters: [
