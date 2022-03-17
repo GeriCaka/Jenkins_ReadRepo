@@ -1,66 +1,29 @@
 pipeline {
-    agent any  
-
-    options {
-        timestamps()
-        buildDiscarder logRotator(daysToKeepStr: '7', numToKeepStr: '10')
-         // This is required if you want to clean before build
-        skipDefaultCheckout(true)
-    }  
+  agent any 
+  
+  triggers {
+    pollSCM '* * * * *'
+  }
+  
+  stages {
+    stage('Calling Base!'){
+      steps { 
+        echo 'Calling Base'
+        build job: 'git_base',
+              parameters: [
+                booleanParam(name: 'StageA', value: "false"),
+                booleanParam(name: 'StageB', value: "false"),
+                booleanParam(name: 'StageC', value: "false")
+              ],
+              wait: true, 
+              propagate: true
+      }      
+    }
     
-    triggers {
-        pollSCM '* * * * *'
-    }
-    environment{
-        
-        SECRET_FILE_JSON = credentials('GCPKEY')
-    }
-    
-    stages {       
-        
-
-        
-        stage('Cred') {
-            steps{
-                withCredentials([file(credentialsId: 'GCPKEY', variable: 'variableName')]) {
-                    echo "My secret text issss ${variableName}"
-                }
-            }
-        }
-
-        stage('Build') {
-            steps {
-                // Clean before build
-                cleanWs()    
-                // We need to explicitly checkout from SCM here
-                script {
-                    currentRevision = checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: 'geri_git', url: 'https://github.com/GeriCaka/Jenkins_ReadRepo.git']]])
-                }
-                echo "Building ${env.JOB_NAME}..."
-                echo "----------- My secret file json is ${SECRET_FILE_JSON}"
-                bat """
-                echo "Holaaa ${currentRevision}"
-                cd src 
-                :This is a comment in sh & I am changing the directory to myFolder
-                """
-            }
-        }
-        
-        stage('SecondPipeline') {
-            steps {
-                script {
-                    def externalMethod = load("externalMethod.groovy")
-                    // Call the method we defined in externalMethod.
-                    externalMethod.lookAtThis("Geri")
-                }
-                
-                build job: 'jenkins',
-                    wait: true, 
-                    propagate: true
-            }
-        }
-    }
-   
+    stage('CustomStage') {
+      steps {
+        echo 'CustomStage'
+      }
+    }   
+  }
 }
-
-
